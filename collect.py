@@ -354,9 +354,9 @@ class DoubleArrayTrie(object):
         return newsize
 
 
-    def save(self):
+    def save(self,filename):
 
-        joblib.dump(self,filename='collo.m')
+        joblib.dump(self,filename=filename)
 
     def load(self,fileName):
         return joblib.load(fileName)
