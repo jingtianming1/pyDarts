@@ -38,7 +38,7 @@ class DoubleArrayTrie(object):
 
         self.progress = 0
 
-        self.resize(32*256*256)
+        self.__resize(32 * 256 * 256)
 
         self.base[0] = 1
 
@@ -48,8 +48,8 @@ class DoubleArrayTrie(object):
         rootNode.depth = 0
 
         childNodes = []
-        self.fetch(rootNode,childNodes)
-        self.insert(childNodes)
+        self.__fetch(rootNode, childNodes)
+        self.__insert(childNodes)
 
 
     def build(self,dic):
@@ -59,7 +59,7 @@ class DoubleArrayTrie(object):
         values  = np.array(values)
         self.__build(keys=keys,values=values)
 
-    def insert(self,childNodes):
+    def __insert(self, childNodes):
 
 
         first = 0
@@ -71,7 +71,7 @@ class DoubleArrayTrie(object):
         while(True):
             pos +=1
             if(self.allowSize<pos):
-                self.resize(pos)
+                self.__resize(pos)
             if self.check[pos] !=0:
                 nonzero_num+=1
                 continue
@@ -85,7 +85,7 @@ class DoubleArrayTrie(object):
             if self.allowSize < begin+childNodes[-1].code:
                 expand_size = 1.05 * self.keySize / (self.progress + 1)
 
-                self.resize(expand_size*self.allowSize)
+                self.__resize(expand_size * self.allowSize)
 
             if self.used[begin] == True:
                 continue
@@ -122,7 +122,7 @@ class DoubleArrayTrie(object):
 
             newNodes = []
 
-            if self.fetch(childNodes[i],newNodes)  ==0:
+            if self.__fetch(childNodes[i], newNodes)  ==0:
 
                 self.base[childNodes[i].code+begin] = -childNodes[i].left-1
                 self.progress +=1
@@ -130,7 +130,7 @@ class DoubleArrayTrie(object):
             else:
 
 
-                h = self.insert(newNodes)
+                h = self.__insert(newNodes)
 
                 self.base[childNodes[i].code+begin] = h
 
@@ -287,7 +287,7 @@ class DoubleArrayTrie(object):
                     if len(values) !=0 and values[-1].star==starIndex:
                         values.pop()
 
-                    # 例如有A与AC,   AC包含A，那么不添加A
+                    # 例如有C与AC,   AC包含C，那么不添加C
                     if len(values) !=0 and values[-1].end==i+1:
                         continue
 
@@ -300,12 +300,7 @@ class DoubleArrayTrie(object):
 
 
 
-
-
-
-
-
-    def fetch(self,parentNode,childNodes):
+    def __fetch(self, parentNode, childNodes):
 
         prev = 0
 
@@ -342,8 +337,7 @@ class DoubleArrayTrie(object):
         return len(childNodes)
 
 
-
-    def resize(self,newsize):
+    def __resize(self, newsize):
 
 
         size = self.base.size
@@ -373,7 +367,6 @@ class DoubleArrayTrie(object):
             self.right = 0
             self.depth = 0
             self.code = 0
-
 
 
     class Word():
